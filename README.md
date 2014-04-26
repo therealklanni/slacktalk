@@ -1,11 +1,11 @@
-# slackhack
+# slacktalk
 
 > Manupulate Slack inbound webhooks.
 
 Provides a simple commandline interface for Slack Incoming WebHooks.
 
 ## Install
-`npm install -g slackhack`
+`npm install -g slacktalk`
 
 ## Configuration
 You must create a YAML config file, with the following format:
@@ -19,23 +19,23 @@ channel: <default_channel> #optional
 Example:
 
 ```yaml
-app: slackhack
+app: slacktalk
 token: frDFFtg56Gdfgg
 channel: #random
 ```
 
 ## Usage
-Now that `slackhack` is configured and installed globally, run `slackhack` to use the CLI.
+Now that `slacktalk` is configured and installed globally, run `slacktalk` to use the CLI.
 
 If you want to take it for a test run, copy/paste this into the command line:
 
 ```bash
-slackhack "Hello world!"
+slacktalk "Hello world!"
 ```
 
-`slackhack` will look for `slackhack.yml` in the working directory if no config file argument is specified.
+`slacktalk` will look for `slacktalk.yml` in the working directory if no config file argument is specified.
 
-For more details, try `slackhack --help`
+For more details, try `slacktalk --help`
 
 See the Slack Incoming WebHooks documentation for details of valid input.
 

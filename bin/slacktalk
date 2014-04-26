@@ -3,7 +3,7 @@
 var fs = require('fs');
 var yaml = require('js-yaml');
 var log = require('verbalize');
-log.runner = 'slackhack';
+log.runner = 'slacktalk';
 
 var program = require('commander');
 
@@ -15,7 +15,7 @@ var errorCode = require('rest/interceptor/errorCode');
 program
   .version('0.1.0')
   .usage('[-f <file>] <text>\n\tslackhack [-f <file>] -s <source_json> [<text>]')
-  .option('-f, --file [file]', 'configuration file location\n\tDefaults to ./slackhack.yml')
+  .option('-f, --file [file]', 'configuration file location\n\tDefaults to ./slacktalk.yml')
   .option('-s, --source [source]', 'input source (JSON) file')
   .parse(process.argv);
 
@@ -36,7 +36,7 @@ var mix = function () {
 var conf = {};
 
 try {
-  conf = yaml.safeLoad(rfs(program.file || './slackhack.yml', 'utf8'));
+  conf = yaml.safeLoad(rfs(program.file || './slacktalk.yml', 'utf8'));
 } catch(e) {
   log.error('No config file found. See --help for details');
   console.log(e)
