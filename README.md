@@ -21,7 +21,7 @@ Example:
 ```yaml
 app: slacktalk
 token: frDFFtg56Gdfgg
-channel: #random
+channel: "#random"
 ```
 
 ## Usage
