@@ -1,0 +1,83 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var yaml = require('js-yaml');
+var log = require('verbalize');
+log.runner = 'slackhack';
+
+var program = require('commander');
+
+var rfs = fs.readFileSync;
+
+var rest = require('rest');
+var errorCode = require('rest/interceptor/errorCode');
+
+program
+  .version('0.1.0')
+  .usage('[-f <file>] <text>\n\tslackhack [-f <file>] -s <source_json> [<text>]')
+  .option('-f, --file [file]', 'configuration file location\n\tDefaults to ./slackhack.yml')
+  .option('-s, --source [source]', 'input source (JSON) file')
+  .parse(process.argv);
+
+var args = program.args;
+
+var mix = function () {
+  var retObj = arguments[0];
+
+  Array.prototype.forEach.call(arguments, function (obj) {
+    Object.keys(obj).forEach(function (key) {
+      retObj[key] = obj[key];
+    });
+  });
+
+  return retObj;
+};
+
+var conf = {};
+
+try {
+  conf = yaml.safeLoad(rfs(program.file || './slackhack.yml', 'utf8'));
+} catch(e) {
+  log.error('No config file found. See --help for details');
+  console.log(e)
+  process.exit(1);
+}
+
+if (!('token' in conf) || !('app' in conf)) {
+  log.error('Config file error')
+  process.exit(1);
+}
+
+var src = {
+  channel: conf.channel || '#general', 
+  username: 'Ghost', 
+  text: null,
+  'icon_emoji': ':ghost:'
+};
+
+try {
+  mix(src, JSON.parse(rfs(program.source, 'utf8')));
+  if (args[0]) src.text = args[0];
+} catch(e) {
+  if (typeof args[0] === 'string') {
+    try {
+      mix(src, JSON.parse(args[0]));
+    } catch (e) {
+      src.text = args[0];
+    }
+  } else {
+    log.error('No input specified');
+    process.exit(1);
+  }
+}
+
+var client = rest.chain(errorCode);
+
+client({ 
+  path: 'https://' + conf.app + '.slack.com/services/hooks/incoming-webhook?token=' + conf.token,
+  entity: JSON.stringify(src)
+}).then(function (resp) {
+  log.success('Message delivered to '+ src.channel +' on '+ conf.app +': "'+ src.text +'"');
+}, function (err) {
+  console.dir(err);
+});
