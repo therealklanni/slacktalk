@@ -1,6 +1,6 @@
 # slacktalk
 
-> Manupulate Slack inbound webhooks.
+> Manipulate Slack inbound webhooks.
 
 Provides a simple commandline interface for Slack Incoming WebHooks.
 

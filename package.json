@@ -1,6 +1,6 @@
 {
   "name": "slacktalk",
-  "description": "Manupulate Slack inbound webhooks.",
+  "description": "Manipulate Slack inbound webhooks.",
   "version": "0.1.1",
   "homepage": "https://github.com/therealklanni/slacktalk",
   "author": {
